@@ -10,12 +10,13 @@ function ApplicationWindow(title) {
 	
 
 	var data = [
-	{id:1, title:"Player Login"},
-	{id:3, title:"Player Info"},
-	{id:2, title:"User Registration"},
-	{id:4, title:"User Login"},
-	{id:5, title:"Submit Score"},
-	{id:6, title:"Give Coupon"},
+	{title:"Player Login"},
+	{title:"Player Info"},
+	{title:"User Registration"},
+	{title:"User Login"},
+	{title:"Submit Score"},
+	{title:"Give Coupon"},
+	{title:"Leaderboard"}
 	];
 
 	var table = Ti.UI.createTableView({
@@ -43,7 +44,8 @@ function ApplicationWindow(title) {
 		beintoo.setUser(o);
 	}
 		
-	//var guid = Ti.App.Properties.getString('userguid', '');
+	var currentScore =  Ti.App.Properties.getString('score', 0);	
+		
 	table.addEventListener("click", function(e){
 		switch(e.index) {
 			case 0:
@@ -63,11 +65,17 @@ function ApplicationWindow(title) {
 			break;
 
 			case 4:
-				beintoo.submitScore(100, null, onDefaultSuccess, onDefaultError);
+				currentScore += 10;
+				Ti.App.Properties.setString('score', currentScore);
+				beintoo.submitScore(currentScore, null, onDefaultSuccess, onDefaultError);
 			break;
 			
 			case 5:
 				beintoo.giveCoupon(onDefaultSuccess, onDefaultError);
+			break;
+			
+			case 6:
+				beintoo.getLeaderBoard(onDefaultSuccess, onDefaultError);
 			break;
 			
 			default:
