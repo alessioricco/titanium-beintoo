@@ -2,90 +2,12 @@ var global = require('/ui/common/environment');
 var API = global.BEINTOOAPI;
 var TIMEOUT = 10000;
 
-/*
 
- function getBeintoo(  )
- {
- var configuration = require('/lib/configuration');
- return configuration.getBeintoo();
- }
-
- function setBeintoo( value )
- {
- var configuration = require('/lib/configuration');
- configuration.setBeintoo(value);
- }
-
- exports.getPlayer = function()
- {
- try
- {
- var s = Titanium.App.Properties.getString( "player" );
- return JSON.parse(s); //Titanium.JSON.parse(user);
- }
- catch (e)
- {
- return null;
- }
- }
-
- exports.setPlayer=function(o)
- {
- try
- {
- Titanium.App.Properties.setString( "player" , JSON.stringify(o));
- }
- catch (e)
- {
- //return null;
- }
- }
-
- exports.getUser = function()
- {
- try
- {
- var s = Titanium.App.Properties.getString( "user" );
- return JSON.parse(s); //Titanium.JSON.parse(user);
- }
- catch (e)
- {
- return null;
- }
- }
-
- exports.setUser=function(o)
- {
- try
- {
- Titanium.App.Properties.setString( "user" , JSON.stringify(o));
- }
- catch (e)
- {
- //return null;
- }
- }
-
- exports.getUserId = function()
- {
- var user = exports.getUser();
- if (! user) return null;
- return user.id;
- }
-
- function isUserRegistredOrLogged()
- {
- return exports.getUserId() != null;
-
- }
- */
 
 exports.getPlayer = function() {
 	try {
 		var s = Titanium.App.Properties.getObject("player", null);
 		return s;
-		//JSON.parse(s);
-		//Titanium.JSON.parse(user);
 	} catch (e) {
 		alert(JSON.stringify(e))
 		return null;
@@ -96,7 +18,6 @@ exports.setPlayer = function(o) {
 	try {
 		Titanium.App.Properties.setObject("player", (o));
 	} catch (e) {
-		//return null;
 		alert(JSON.stringify(e))
 	}
 }
@@ -105,7 +26,6 @@ exports.getUser = function() {
 	try {
 		var s = Titanium.App.Properties.getObject("user", null);
 		return s;
-		//JSON.parse(s);
 	} catch (e) {
 		alert(JSON.stringify(e))
 		return null;
@@ -128,8 +48,6 @@ exports.getUserId = function() {
 }
 
 exports.beintooREST = function(cmd, url, headers, callbackSuccess, callbackError, postparam) {
-
-	//if (global.MOBILEWEB) return;
 
 	var xhr_task = Ti.Network.createHTTPClient();
 	xhr_task.timeout = TIMEOUT;
