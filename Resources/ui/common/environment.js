@@ -5,3 +5,4 @@ exports.userEmail = "ticonf@mailcatch.com";
 exports.userNickname = "wallive";
 exports.userPassword = "wallive";
 
+exports.achievementId = "37f27bca51139d3d09466b356d0713ea"; //"f475b736cd516ba2139cdd468bb3451c";

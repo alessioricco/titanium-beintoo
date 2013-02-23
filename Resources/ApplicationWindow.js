@@ -16,7 +16,10 @@ function ApplicationWindow(title) {
 	{title:"User Login"},
 	{title:"Submit Score"},
 	{title:"Give Coupon"},
-	{title:"Leaderboard"}
+	{title:"Leaderboard"},
+	{title:"Get achievements list"},
+	{title:"Get my achievements"}
+	
 	];
 
 	var table = Ti.UI.createTableView({
@@ -43,7 +46,11 @@ function ApplicationWindow(title) {
 		onDefaultSuccess(o);
 		beintoo.setUser(o);
 	}
-		
+
+	function onUserLoginSuccess(o){
+		onDefaultSuccess(o);
+		beintoo.setUser(o);
+	}		
 	var currentScore =  Ti.App.Properties.getString('score', 0);	
 		
 	table.addEventListener("click", function(e){
@@ -61,7 +68,7 @@ function ApplicationWindow(title) {
 			break;
 			
 			case 3:
-				beintoo.userGet(global.userEmail, global.userPassword, onDefaultSuccess, onDefaultError);
+				beintoo.userGet(global.userEmail, global.userPassword, onUserLoginSuccess, onDefaultError);
 			break;
 
 			case 4:
@@ -77,7 +84,16 @@ function ApplicationWindow(title) {
 			case 6:
 				beintoo.getLeaderBoard(onDefaultSuccess, onDefaultError);
 			break;
-			
+
+			case 7:
+				beintoo.getAchievement(onDefaultSuccess, onDefaultError);
+			break;
+
+			case 8:
+				beintoo.getMyAchievements(global.achievementId,onDefaultSuccess, onDefaultError);
+			break;
+
+						
 			default:
 			break;
 		}

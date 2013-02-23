@@ -2,8 +2,6 @@ var global = require('/ui/common/environment');
 var API = global.BEINTOOAPI;
 var TIMEOUT = 10000;
 
-
-
 exports.getPlayer = function() {
 	try {
 		var s = Titanium.App.Properties.getObject("player", null);
@@ -101,6 +99,45 @@ exports.getLeaderBoard = function(callbackSuccess, callbackError) {
 
 }
 
+exports.getAchievement = function(callbackSuccess, callbackError) {
+
+	var headers = null;
+	exports.beintooREST('GET', 'https://api.beintoo.com/api/rest/achievement', headers, callbackSuccess, callbackError);
+
+}
+
+exports.getMyAchievements = function(achievementId, callbackSuccess, callbackError) {
+
+	var userId = exports.getUserId();
+	var headers = null;
+	if (userId) {
+		headers = [{
+			key : 'userExt',
+			value : userId
+		}];
+	} else {
+		alert("User needed");
+		return;
+	};
+
+	var player = exports.getPlayer();
+	var guid = null;
+
+	if (player) {
+		guid = player.guid;
+		headers = [{
+			key : 'guid',
+			value : guid
+		}];
+	}
+
+	var postParam = {
+		value : 99, // put here your current score
+		guid : guid
+	};
+	exports.beintooREST('POST', 'https://api.beintoo.com/api/rest/achievement/' + achievementId, headers, callbackSuccess, callbackError, postParam);
+}
+
 exports.playerLogin = function(callbackSuccess, callbackError) {
 	// before to login, Am I a user?
 	var userId = exports.getUserId();
@@ -128,16 +165,15 @@ exports.playerLogin = function(callbackSuccess, callbackError) {
 
 exports.playerGet = function(callbackSuccess, callbackError) {
 
+	var player = exports.getPlayer();
 
-		var player = exports.getPlayer();
-
-		if (player) {
-			var guid = player.guid;
-			exports.beintooREST('GET', 'https://api.beintoo.com/api/rest/player/byguid/' + guid, null, callbackSuccess, callbackError);
-		} else {
-			alert("You need a player GUID");
-			return;
-		}
+	if (player) {
+		var guid = player.guid;
+		exports.beintooREST('GET', 'https://api.beintoo.com/api/rest/player/byguid/' + guid, null, callbackSuccess, callbackError);
+	} else {
+		alert("You need a player GUID");
+		return;
+	}
 
 }
 
@@ -188,27 +224,22 @@ exports.submitScore = function(score, contest, callbackSuccess, callbackError) {
 
 	var headers = [];
 
-		headers.push({
-			key : 'guid',
-			value : player.guid
-		});
-		if (contest)
-		{
+	headers.push({
+		key : 'guid',
+		value : player.guid
+	});
+	if (contest) {
 		headers.push({
 			key : 'codeID',
 			value : contest
 		});
-			
-		}
+
+	}
 
 	exports.beintooREST('GET', 'https://api.beintoo.com/api/rest/player/submitscore/?lastScore=' + score, headers, callbackSuccess, callbackError);
 }
 
 exports.giveCoupon = function(callbackSuccess, callbackError) {
-
-
-
-	var headers = [];
 
 	var userId = exports.getUserId();
 	var headers = null;
@@ -217,9 +248,8 @@ exports.giveCoupon = function(callbackSuccess, callbackError) {
 			key : 'userExt',
 			value : userId
 		}];
-	}
-	else {
-		alert("An User is needed");
+	} else {
+		alert("User needed");
 		return;
 	}
 	exports.beintooREST('GET', 'https://api.beintoo.com/api/rest/vgood/byuser/' + userId, headers, callbackSuccess, callbackError);
